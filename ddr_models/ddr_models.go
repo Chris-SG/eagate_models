@@ -19,7 +19,8 @@ type PlayerDetails struct {
 	DoublePlaycount    int       `tag:"プレー回数_double" gorm:"column:double_playcount"`
 	DoubleLastPlayDate time.Time `tag:"最終プレー日時_double" gorm:"column:last_double_play_date"`
 
-	EaGateUser user_models.User `gorm:"foreignkey:account_name"`
+	User user_models.User `gorm:"foreignkey:account_name"`
+	EaGateUser string `gorm:"column:eagate_user"`
 }
 
 func (PlayerDetails) TableName() string {
@@ -42,7 +43,7 @@ func (Song) TableName() string {
 
 type SongDifficulty struct {
 	SongId string `gorm:"column:song_id;primary_key"`
-	DifficultyId int8 `gorm:"column:difficulty_id;primary_key"`
+	DifficultyId int8 `gorm:"column:difficulty_id;primary_key;auto_increment:false"`
 	DifficultyValue int8 `gorm:"column:difficulty_value"`
 }
 
