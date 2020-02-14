@@ -6,35 +6,34 @@ import (
 )
 
 type PlayerDetails struct {
-	Code               int       `tag:"DDR-CODE_sougou" gorm:"column:code;primary_key"`
-	Name               string    `tag:"ダンサーネーム_sougou" gorm:"column:name"`
-	Prefecture         string    `tag:"所属都道府県_sougou" gorm:"column:location"`
-	SingleRank         string    `tag:"段位(SINGLE)_sougou" gorm:"column:single_rank"`
-	DoubleRank         string    `tag:"段位(DOUBLE)_sougou" gorm:"column:double_rank"`
-	Affiliation        string    `tag:"所属クラス_sougou" gorm:"column:affiliation"`
-	Playcount          int       `tag:"総プレー回数_sougou" gorm:"column:playcount"`
-	LastPlayDate       time.Time `tag:"最終プレー日時_sougou" gorm:"column:last_play_date"`
+	Code               int       `tag:"DDR-CODE" gorm:"column:code;primary_key"`
+	Name               string    `tag:"ダンサーネーム" gorm:"column:name"`
+	Prefecture         string    `tag:"所属都道府県" gorm:"column:location"`
+	SingleRank         string    `tag:"段位(SINGLE)" gorm:"column:single_rank"`
+	DoubleRank         string    `tag:"段位(DOUBLE)" gorm:"column:double_rank"`
+	Affiliation        string    `tag:"所属クラス" gorm:"column:affiliation"`
+	Playcount          int       `tag:"総プレー回数" gorm:"column:playcount"`
+	LastPlayDate       time.Time `tag:"最終プレー日時" gorm:"column:last_play_date"`
 	SinglePlaycount    int       `tag:"プレー回数_single" gorm:"column:single_playcount"`
 	SingleLastPlayDate time.Time `tag:"最終プレー日時_single" gorm:"column:last_single_play_date"`
 	DoublePlaycount    int       `tag:"プレー回数_double" gorm:"column:double_playcount"`
 	DoubleLastPlayDate time.Time `tag:"最終プレー日時_double" gorm:"column:last_double_play_date"`
 
-	User user_models.User `gorm:"foreignkey:account_name"`
-	EaGateUser string `gorm:"column:eagate_user"`
+	User       user_models.User `gorm:"foreignkey:account_name"`
+	EaGateUser *string          `gorm:"column:eagate_user"`
 }
 
 func (PlayerDetails) TableName() string {
 	return "ddrPlayerDetails"
 }
 
-
 type Song struct {
-	Id     string `gorm:"column:song_id;primary_key"`
-	Name   string `gorm:"column:song_name"`
-	Artist string `gorm:"column:song_artist"`
-	Image  string `gorm:"column:song_image"`
+	Id     string `gorm:"column:id;primary_key"`
+	Name   string `gorm:"column:name"`
+	Artist string `gorm:"column:artist"`
+	Image  string `gorm:"column:image"`
 
-	Difficulties []SongDifficulty `gorm:"foreignkey:SongId"`
+	Difficulties []SongDifficulty `gorm:"foreignkey:Id"`
 }
 
 func (Song) TableName() string {
@@ -42,25 +41,64 @@ func (Song) TableName() string {
 }
 
 type SongDifficulty struct {
-	SongId string `gorm:"column:song_id;primary_key"`
-	DifficultyId int8 `gorm:"column:difficulty_id;primary_key;auto_increment:false"`
-	DifficultyValue int8 `gorm:"column:difficulty_value"`
+	SongId          string `gorm:"column:song_id;primary_key"`
+	Mode            string `gorm:"column:mode;primary_key"`
+	Difficulty      string `gorm:"column:difficulty;primary_key"`
+	DifficultyValue int16  `gorm:"column:difficulty_value"`
 }
 
 func (SongDifficulty) TableName() string {
 	return "ddrSongDifficulties"
 }
 
+type Mode int
+
+const (
+	Single Mode = iota
+	Double
+)
+
+func (mode Mode) String() string {
+	modeLabels := [...]string{
+		"SINGLE",
+		"DOUBLE",
+	}
+
+	return modeLabels[mode]
+}
+
+type Difficulty int
+
+const (
+	Beginner Difficulty = iota
+	Basic
+	Difficult
+	Expert
+	Challenge
+)
+
+func (difficulty Difficulty) String() string {
+	difficultyLabels := [...]string{
+		"BEGINNER",
+		"BASIC",
+		"DIFFICULT",
+		"EXPERT",
+		"CHALLENGE",
+	}
+
+	return difficultyLabels[difficulty%5]
+}
+
 type SongStatistics struct {
-	BestScore      int `tag:"ハイスコア" gorm:"column:score_record"`
-	Lamp       int8		 `gorm:"column:clear_lamp"`
+	BestScore  int       `tag:"ハイスコア" gorm:"column:score_record"`
+	Lamp       int16     `gorm:"column:clear_lamp"`
 	PlayCount  int       `tag:"プレー回数" gorm:"column:playcount"`
 	ClearCount int       `tag:"クリア回数" gorm:"column:clearcount"`
 	MaxCombo   int       `tag:"最大コンボ数" gorm:"column:maxcombo"`
 	LastPlayed time.Time `tag:"最終プレー時間" gorm:"column:lastplayed"`
 
-	Chart SongDifficulty	`gorm:"primary_key"`
-	Player PlayerDetails	`gorm:"primary_key"`
+	Chart  SongDifficulty `gorm:"primary_key"`
+	Player PlayerDetails  `gorm:"primary_key"`
 }
 
 func (SongStatistics) TableName() string {
@@ -68,9 +106,17 @@ func (SongStatistics) TableName() string {
 }
 
 type Score struct {
-	Score int `gorm:"column:score"`
-	TimePlayed time.Time `gorm:"column:time_played;primary_key"`
+	Score       int       `gorm:"column:score"`
+	ClearStatus bool      `gorm:"column:cleared"`
+	TimePlayed  time.Time `gorm:"column:time_played;primary_key"`
 
-	Chart SongDifficulty	`gorm:"primary_key"`
-	Player PlayerDetails	`gorm:"primary_key"`
+	SongId     string `gorm:"column:song_id;primary_key"`
+	Mode       string `gorm:"column:mode;primary_key"`
+	Difficulty string `gorm:"column:difficulty;primary_key"`
+
+	PlayerCode int `gorm:"column:player_code;primary_key"`
+}
+
+func (Score) TableName() string {
+	return "ddrScores"
 }
