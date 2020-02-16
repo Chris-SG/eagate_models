@@ -6,18 +6,12 @@ import (
 )
 
 type PlayerDetails struct {
-	Code               int       `tag:"DDR-CODE" gorm:"column:code;primary_key"`
-	Name               string    `tag:"ダンサーネーム" gorm:"column:name"`
-	Prefecture         string    `tag:"所属都道府県" gorm:"column:location"`
-	SingleRank         string    `tag:"段位(SINGLE)" gorm:"column:single_rank"`
-	DoubleRank         string    `tag:"段位(DOUBLE)" gorm:"column:double_rank"`
-	Affiliation        string    `tag:"所属クラス" gorm:"column:affiliation"`
-	Playcount          int       `tag:"総プレー回数" gorm:"column:playcount"`
-	LastPlayDate       time.Time `tag:"最終プレー日時" gorm:"column:last_play_date"`
-	SinglePlaycount    int       `tag:"プレー回数_single" gorm:"column:single_playcount"`
-	SingleLastPlayDate time.Time `tag:"最終プレー日時_single" gorm:"column:last_single_play_date"`
-	DoublePlaycount    int       `tag:"プレー回数_double" gorm:"column:double_playcount"`
-	DoubleLastPlayDate time.Time `tag:"最終プレー日時_double" gorm:"column:last_double_play_date"`
+	Code        int    `tag:"DDR-CODE" gorm:"column:code;primary_key"`
+	Name        string `tag:"ダンサーネーム" gorm:"column:name"`
+	Prefecture  string `tag:"所属都道府県" gorm:"column:location"`
+	SingleRank  string `tag:"段位(SINGLE)" gorm:"column:single_rank"`
+	DoubleRank  string `tag:"段位(DOUBLE)" gorm:"column:double_rank"`
+	Affiliation string `tag:"所属クラス" gorm:"column:affiliation"`
 
 	User       user_models.User `gorm:"foreignkey:account_name"`
 	EaGateUser *string          `gorm:"column:eagate_user"`
@@ -25,6 +19,22 @@ type PlayerDetails struct {
 
 func (PlayerDetails) TableName() string {
 	return "ddrPlayerDetails"
+}
+
+type Playcount struct {
+	Playcount          int       `tag:"総プレー回数" gorm:"column:playcount"`
+	LastPlayDate       time.Time `tag:"最終プレー日時" gorm:"column:last_play_date;primary_key"`
+	SinglePlaycount    int       `tag:"プレー回数_single" gorm:"column:single_playcount"`
+	SingleLastPlayDate time.Time `tag:"最終プレー日時_single" gorm:"column:last_single_play_date"`
+	DoublePlaycount    int       `tag:"プレー回数_double" gorm:"column:double_playcount"`
+	DoubleLastPlayDate time.Time `tag:"最終プレー日時_double" gorm:"column:last_double_play_date"`
+
+	Player     PlayerDetails `gorm:"foreignkey:code"`
+	PlayerCode int           `gorm:"column:player_code;primary_key"`
+}
+
+func (Playcount) TableName() string {
+	return "ddrPlaycount"
 }
 
 type Song struct {
@@ -67,6 +77,14 @@ func (mode Mode) String() string {
 	return modeLabels[mode]
 }
 
+func StringToMode(mode string) Mode {
+	modeLabels := map[string]Mode{
+		"SINGLE": Single,
+		"DOUBLE": Double,
+	}
+	return modeLabels[mode]
+}
+
 type Difficulty int
 
 const (
@@ -89,9 +107,21 @@ func (difficulty Difficulty) String() string {
 	return difficultyLabels[difficulty%5]
 }
 
+func StringToDifficulty(difficulty string) Difficulty {
+	difficultyLabels := map[string]Difficulty{
+		"BEGINNER": Beginner,
+		"BASIC": Basic,
+		"DIFFICULT": Difficult,
+		"EXPERT": Expert,
+		"CHALLENGE": Challenge,
+	}
+	return difficultyLabels[difficulty]
+}
+
 type SongStatistics struct {
 	BestScore  int       `tag:"ハイスコア" gorm:"column:score_record"`
-	Lamp       int16     `gorm:"column:clear_lamp"`
+	Lamp       string    `tag:"フルコンボ種別" gorm:"column:clear_lamp"`
+	Rank       string    `tag:"ハイスコア時のダンスレベル" gorm"column:rank"`
 	PlayCount  int       `tag:"プレー回数" gorm:"column:playcount"`
 	ClearCount int       `tag:"クリア回数" gorm:"column:clearcount"`
 	MaxCombo   int       `tag:"最大コンボ数" gorm:"column:maxcombo"`
