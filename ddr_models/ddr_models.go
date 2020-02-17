@@ -74,7 +74,7 @@ func (mode Mode) String() string {
 		"DOUBLE",
 	}
 
-	return modeLabels[mode]
+	return modeLabels[mode%2]
 }
 
 func StringToMode(mode string) Mode {
@@ -127,8 +127,11 @@ type SongStatistics struct {
 	MaxCombo   int       `tag:"最大コンボ数" gorm:"column:maxcombo"`
 	LastPlayed time.Time `tag:"最終プレー時間" gorm:"column:lastplayed"`
 
-	Chart  SongDifficulty `gorm:"primary_key"`
-	Player PlayerDetails  `gorm:"primary_key"`
+	SongId     string `gorm:"column:song_id;primary_key"`
+	Mode       string `gorm:"column:mode;primary_key"`
+	Difficulty string `gorm:"column:difficulty;primary_key"`
+
+	PlayerCode int `gorm:"column:player_code;primary_key"`
 }
 
 func (SongStatistics) TableName() string {
