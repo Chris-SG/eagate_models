@@ -5,6 +5,8 @@ type User struct {
 	NickName   string `gorm:"column:community_name"`
 	Cookie     string `gorm:"column:login_cookie"`
 	Expiration int64  `gorm:"column:cookie_expiration"`
+
+	WebUser string `gorm:"column:web_user"`
 }
 
 func (User) TableName() string {
