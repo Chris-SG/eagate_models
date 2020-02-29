@@ -1,7 +1,6 @@
 package ddr_models
 
 import (
-	"github.com/chris-sg/eagate_models/user_models"
 	"time"
 )
 
@@ -13,7 +12,6 @@ type PlayerDetails struct {
 	DoubleRank  string `tag:"段位(DOUBLE)" gorm:"column:double_rank"`
 	Affiliation string `tag:"所属クラス" gorm:"column:affiliation"`
 
-	User       user_models.User `gorm:"foreignkey:account_name"`
 	EaGateUser *string          `gorm:"column:eagate_user"`
 }
 
