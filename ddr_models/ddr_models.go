@@ -151,3 +151,15 @@ type Score struct {
 func (Score) TableName() string {
 	return "ddrScores"
 }
+
+type WorkoutData struct {
+	Date time.Time `gorm:"column:date;primary_key"`
+	PlayCount int `gorm:"column:playcount"`
+	Kcal float32 `gorm:"column:kcal"`
+
+	PlayerCode int `gorm:"column:player_code;primary_key"`
+}
+
+func (WorkoutData) TableName() string {
+	return "ddrWorkoutData"
+}
