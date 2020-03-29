@@ -27,7 +27,6 @@ type Playcount struct {
 	DoublePlaycount    int       `tag:"プレー回数_double" gorm:"column:double_playcount"`
 	DoubleLastPlayDate time.Time `tag:"最終プレー日時_double" gorm:"column:last_double_play_date"`
 
-	Player     PlayerDetails `gorm:"foreignkey:code"`
 	PlayerCode int           `gorm:"column:player_code;primary_key"`
 }
 
@@ -40,8 +39,6 @@ type Song struct {
 	Name   string `gorm:"column:name"`
 	Artist string `gorm:"column:artist"`
 	Image  string `gorm:"column:image"`
-
-	Difficulties []SongDifficulty `gorm:"foreignkey:Id"`
 }
 
 func (Song) TableName() string {
