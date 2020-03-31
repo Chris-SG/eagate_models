@@ -34,6 +34,12 @@ func (Playcount) TableName() string {
 	return "ddrPlaycount"
 }
 
+func (p1 Playcount) Equals(p2 Playcount) bool {
+	return p1.PlayerCode == p2.PlayerCode &&
+		p1.Playcount == p2.Playcount &&
+		p1.LastPlayDate.String() == p2.LastPlayDate.String()
+}
+
 type Song struct {
 	Id     string `gorm:"column:id;primary_key"`
 	Name   string `gorm:"column:name"`
@@ -133,6 +139,20 @@ func (SongStatistics) TableName() string {
 	return "ddrSongStatistics"
 }
 
+func (s1 SongStatistics) Equals(s2 SongStatistics) bool {
+	return s1.SongId == s2.SongId &&
+			s1.Mode == s2.Mode &&
+			s1.Difficulty == s2.Difficulty &&
+			s1.PlayerCode == s2.PlayerCode &&
+			s1.BestScore == s2.BestScore &&
+			s1.Lamp == s2.Lamp &&
+			s1.Rank == s2.Rank &&
+			s1.PlayCount == s2.PlayCount &&
+			s1.ClearCount == s2.ClearCount &&
+			s1.MaxCombo == s2.MaxCombo &&
+			s1.LastPlayed.String() == s2.LastPlayed.String()
+}
+
 type Score struct {
 	Score       int       `gorm:"column:score"`
 	ClearStatus bool      `gorm:"column:cleared"`
@@ -149,6 +169,16 @@ func (Score) TableName() string {
 	return "ddrScores"
 }
 
+func (s1 Score) Equals(s2 Score) bool {
+	return s1.SongId == s2.SongId &&
+		s1.Mode == s2.Mode &&
+		s1.Difficulty == s2.Difficulty &&
+		s1.PlayerCode == s2.PlayerCode &&
+		s1.Score == s2.Score &&
+		s1.ClearStatus == s2.ClearStatus &&
+		s1.TimePlayed.String() == s2.TimePlayed.String()
+}
+
 type WorkoutData struct {
 	Date time.Time `gorm:"column:date;primary_key"`
 	PlayCount int `gorm:"column:playcount"`
@@ -159,4 +189,11 @@ type WorkoutData struct {
 
 func (WorkoutData) TableName() string {
 	return "ddrWorkoutData"
+}
+
+func (w1 WorkoutData) Equals(w2 WorkoutData) bool {
+	return w1.PlayerCode == w2.PlayerCode &&
+			w1.Kcal == w2.Kcal &&
+			w1.PlayCount == w2.PlayCount &&
+			w1.Date.String() == w2.Date.String()
 }
