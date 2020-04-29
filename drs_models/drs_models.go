@@ -18,6 +18,7 @@ type PlayerProfileSnapshot struct {
 	PlaySeconds int `gorm:"column:play_seconds"`
 	TotalStars  int `gorm:"column:total_stars"`
 	UsedStars   int `gorm:"column:used_stars"`
+	LastPlayed  time.Time `gorm:"column:last_played"`
 
 	PlayerCode int `gorm:"column:player_code;primary_key"`
 }
