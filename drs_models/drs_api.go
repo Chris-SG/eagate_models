@@ -55,8 +55,8 @@ type musicDataEaSitePlayerData struct {
 	Result int `json:"result"`
 	UserId musicDataUserId `json:"userid"`
 	UnlockedMusic musicDataUnlockMusic `json:"unlock_music"`
-	ScoreData musicDataScoreData `json:"score_data"`
-	MusicDb musicDataMusicDb `json:"mdb"`
+	ScoreData musicDataScoreData `json:"scoredata"`
+	MusicDb map[string]songDbEntry `json:"mdb"`
 }
 
 type musicDataUserId struct {
@@ -95,10 +95,6 @@ type musicDataPlayerScoreDetails struct {
 	Bad int `json:"bad"`
 }
 
-type musicDataMusicDb struct {
-	SongEntries map[string]songDbEntry
-}
-
 
 // play_hist
 type PlayHist struct {
@@ -115,7 +111,7 @@ type playHistEaSitePlayerData struct {
 	Result int `json:"result"`
 	UserId playHistUserId `json:"userid"`
 	MusicHistory playHistMusicHist `json:"music_hist"`
-	MusicDb playHistMusicDb `json:"mdb"`
+	MusicDb map[string]songDbEntry `json:"mdb"`
 }
 
 type playHistUserId struct {
@@ -152,15 +148,11 @@ type playHistPlayerScoreDetails struct {
 	Bad int `json:"bad"`
 }
 
-type playHistMusicDb struct {
-	SongEntries map[string]songDbEntry
-}
-
 
 // song db entries
 type songDbEntry struct {
 	Info songInfo `json:"info"`
-	Difficulties songDifficulties `json:"difficulty"`
+	Difficulties map[string]songDifficulty `json:"difficulty"`
 }
 
 type songInfo struct {
@@ -175,10 +167,6 @@ type songInfo struct {
 	Genre int `json:"genre"`
 	PlayVideoFlags int `json:"play_video_flags"`
 	License string `json:"license"`
-}
-
-type songDifficulties struct {
-	Difficulties map[string]songDifficulty
 }
 
 type songDifficulty struct {
