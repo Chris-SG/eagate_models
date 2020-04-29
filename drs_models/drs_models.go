@@ -86,6 +86,18 @@ func (PlayerSongStats) TableName() string {
 	return "drsPlayerSongStats"
 }
 
+func (s1 PlayerSongStats) Equals(s2 PlayerSongStats) bool {
+	return s1.SongId == s2.SongId &&
+		s1.Mode == s2.Mode &&
+		s1.Difficulty == s2.Difficulty &&
+		s1.PlayerCode == s2.PlayerCode &&
+		s1.BestScoreDateTime.String() == s2.BestScoreDateTime.String() &&
+		s1.LastPlayDateTime.String() == s2.LastPlayDateTime.String() &&
+		s1.BestScore == s2.BestScore &&
+		s1.Combo == s2.Combo &&
+		s1.PlayCount == s2.PlayCount
+}
+
 type PlayerScore struct {
 	Shop     string    `gorm:"column:shop"`
 	Score    int       `gorm:"column:score"`
