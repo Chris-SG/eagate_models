@@ -3,10 +3,10 @@ package drs_models
 import "time"
 
 type PlayerDetails struct {
-	Code int    `gorm:"column:code;primary_key"`
-	Name string `gorm:"column:name"`
+	Code int    `gorm:"column:code;primary_key" json:"code"`
+	Name string `gorm:"column:name" json:"name"`
 
-	EaGateUser *string `gorm:"column:eagate_user"`
+	EaGateUser *string `gorm:"column:eagate_user" json:"eagateuser"`
 }
 
 func (PlayerDetails) TableName() string {
@@ -14,13 +14,13 @@ func (PlayerDetails) TableName() string {
 }
 
 type PlayerProfileSnapshot struct {
-	PlayCount   int `gorm:"column:play_count;primary_key"`
-	PlaySeconds int `gorm:"column:play_seconds"`
-	TotalStars  int `gorm:"column:total_stars"`
-	UsedStars   int `gorm:"column:used_stars"`
-	LastPlayed  time.Time `gorm:"column:last_played"`
+	PlayCount   int `gorm:"column:play_count;primary_key" json:"playcount"`
+	PlaySeconds int `gorm:"column:play_seconds" json:"playseconds"`
+	TotalStars  int `gorm:"column:total_stars" json:"totalstars"`
+	UsedStars   int `gorm:"column:used_stars" json:"usedstars"`
+	LastPlayed  time.Time `gorm:"column:last_played" json:"timeplayed"`
 
-	PlayerCode int `gorm:"column:player_code;primary_key"`
+	PlayerCode int `gorm:"column:player_code;primary_key" json:"code"`
 }
 
 func (PlayerProfileSnapshot) TableName() string {
@@ -28,15 +28,15 @@ func (PlayerProfileSnapshot) TableName() string {
 }
 
 type Song struct {
-	SongId         string `gorm:"column:song_id;primary_key"`
-	SongName       string `gorm:"column:name"`
-	ArtistName     string `gorm:"column:artist"`
-	MaxBpm         int    `gorm:"column:max_bpm"`
-	MinBpm         int    `gorm:"column:min_bpm"`
-	LimitationType int    `gorm:"column:limitation_type"`
-	Genre          int    `gorm:"column:genre"`
-	VideoFlags     int    `gorm:"column:video_flags"`
-	License        string `gorm:"column:license"`
+	SongId         string `gorm:"column:song_id;primary_key" json:"id"`
+	SongName       string `gorm:"column:name" json:"title"`
+	ArtistName     string `gorm:"column:artist" json:"artist"`
+	MaxBpm         int    `gorm:"column:max_bpm" json:"maxbpm"`
+	MinBpm         int    `gorm:"column:min_bpm" json:"minbpm"`
+	LimitationType int    `gorm:"column:limitation_type" json:"limitation"`
+	Genre          int    `gorm:"column:genre" json:"genre"`
+	VideoFlags     int    `gorm:"column:video_flags" json:"videoflags"`
+	License        string `gorm:"column:license" json:"license"`
 }
 
 func (Song) TableName() string {
@@ -44,11 +44,11 @@ func (Song) TableName() string {
 }
 
 type Difficulty struct {
-	Mode       string `gorm:"column:mode"`
-	Difficulty string `gorm:"column:difficulty"`
-	Level      int    `gorm:"column:level"`
+	Mode       string `gorm:"column:mode" json:"mode"`
+	Difficulty string `gorm:"column:difficulty" json:"difficulty"`
+	Level      int    `gorm:"column:level" json:"level"`
 
-	SongId string `gorm:"column:song_id;primary_key"`
+	SongId string `gorm:"column:song_id;primary_key" json:"id"`
 }
 
 func (Difficulty) TableName() string {
@@ -56,31 +56,31 @@ func (Difficulty) TableName() string {
 }
 
 type PlayerSongStats struct {
-	BestScore         int       `gorm:"column:best_score"`
-	Combo             int       `gorm:"column:combo"`
-	PlayCount         int       `gorm:"column:play_count"`
-	Param             int       `gorm:"column:param"`
-	BestScoreDateTime time.Time `gorm:"column:best_score_time"`
-	LastPlayDateTime  time.Time `gorm:"column:last_play_time"`
+	BestScore         int       `gorm:"column:best_score" json:"bestscore"`
+	Combo             int       `gorm:"column:combo" json:"combo"`
+	PlayCount         int       `gorm:"column:play_count" json:"playcount"`
+	Param             int       `gorm:"column:param" json:"param"`
+	BestScoreDateTime time.Time `gorm:"column:best_score_time" json:"bestscoretime"`
+	LastPlayDateTime  time.Time `gorm:"column:last_play_time" json:"lastplaytime"`
 
-	P1Code     int `gorm:"column:p1_code"`
-	P1Score    int `gorm:"column:p1_score"`
-	P1Perfects int `gorm:"column:p1_perfects"`
-	P1Greats   int `gorm:"column:p1_greats"`
-	P1Goods    int `gorm:"column:p1_goods"`
-	P1Bads     int `gorm:"column:p1_bads"`
+	P1Code     int `gorm:"column:p1_code" json:"p1code"`
+	P1Score    int `gorm:"column:p1_score" json:"p1combo"`
+	P1Perfects int `gorm:"column:p1_perfects" json:"p1perfects"`
+	P1Greats   int `gorm:"column:p1_greats" json:"p1greats"`
+	P1Goods    int `gorm:"column:p1_goods" json:"p1goods"`
+	P1Bads     int `gorm:"column:p1_bads" json:"p1bads"`
 
-	P2Code     *int `gorm:"column:p2_code"`
-	P2Score    *int `gorm:"column:p2_score"`
-	P2Perfects *int `gorm:"column:p2_perfects"`
-	P2Greats   *int `gorm:"column:p2_greats"`
-	P2Goods    *int `gorm:"column:p2_goods"`
-	P2Bads     *int `gorm:"column:p2_bads"`
+	P2Code     *int `gorm:"column:p2_code" json:"p2code;omitempty"`
+	P2Score    *int `gorm:"column:p2_score" json:"p2score;omitempty"`
+	P2Perfects *int `gorm:"column:p2_perfects" json:"p2perfects;omitempty"`
+	P2Greats   *int `gorm:"column:p2_greats" json:"p2greats;omitempty"`
+	P2Goods    *int `gorm:"column:p2_goods" json:"p2goods;omitempty"`
+	P2Bads     *int `gorm:"column:p2_bads" json:"p2bads;omitempty"`
 
-	PlayerCode int    `gorm:"column:player_code;primary_key"`
-	SongId     string `gorm:"column:song_id;primary_key"`
-	Mode       string `gorm:"column:mode;primary_key"`
-	Difficulty string `gorm:"column:difficulty;primary_key"`
+	PlayerCode int    `gorm:"column:player_code;primary_key" json:"code"`
+	SongId     string `gorm:"column:song_id;primary_key" json:"id"`
+	Mode       string `gorm:"column:mode;primary_key" json:"mode"`
+	Difficulty string `gorm:"column:difficulty;primary_key" json:"difficulty"`
 }
 
 func (PlayerSongStats) TableName() string {
@@ -100,32 +100,32 @@ func (s1 PlayerSongStats) Equals(s2 PlayerSongStats) bool {
 }
 
 type PlayerScore struct {
-	Shop     string    `gorm:"column:shop"`
-	Score    int       `gorm:"column:score"`
-	MaxCombo int       `gorm:"column:max_combo"`
-	Param    int       `gorm:"column:param"`
-	PlayTime time.Time `gorm:"column:play_time"`
+	Shop     string    `gorm:"column:shop" json:"shop"`
+	Score    int       `gorm:"column:score" json:"score"`
+	MaxCombo int       `gorm:"column:max_combo" json:"maxcombo"`
+	Param    int       `gorm:"column:param" json:"param"`
+	PlayTime time.Time `gorm:"column:play_time" json:"playtime"`
 
-	P1Code     int `gorm:"column:p1_code"`
-	P1Score    int `gorm:"column:p1_score"`
-	P1Perfects int `gorm:"column:p1_perfects"`
-	P1Greats   int `gorm:"column:p1_greats"`
-	P1Goods    int `gorm:"column:p1_goods"`
-	P1Bads     int `gorm:"column:p1_bads"`
+	P1Code     int `gorm:"column:p1_code" json:"p1code"`
+	P1Score    int `gorm:"column:p1_score" json:"p1score"`
+	P1Perfects int `gorm:"column:p1_perfects" json:"p1perfects"`
+	P1Greats   int `gorm:"column:p1_greats" json:"p1greats"`
+	P1Goods    int `gorm:"column:p1_goods" json:"p1goods"`
+	P1Bads     int `gorm:"column:p1_bads" json:"p1bads"`
 
-	P2Code     *int `gorm:"column:p2_code"`
-	P2Score    *int `gorm:"column:p2_score"`
-	P2Perfects *int `gorm:"column:p2_perfects"`
-	P2Greats   *int `gorm:"column:p2_greats"`
-	P2Goods    *int `gorm:"column:p2_goods"`
-	P2Bads     *int `gorm:"column:p2_bads"`
+	P2Code     *int `gorm:"column:p2_code" json:"p2code;omitempty"`
+	P2Score    *int `gorm:"column:p2_score" json:"p2score;omitempty"`
+	P2Perfects *int `gorm:"column:p2_perfects" json:"p2perfects;omitempty"`
+	P2Greats   *int `gorm:"column:p2_greats" json:"p2greats;omitempty"`
+	P2Goods    *int `gorm:"column:p2_goods" json:"p2goods;omitempty"`
+	P2Bads     *int `gorm:"column:p2_bads" json:"p2bads;omitempty"`
 
-	VideoUrl *string `gorm:"column:video_url"`
+	VideoUrl *string `gorm:"column:video_url" json:"videourl;omitempty"`
 
-	PlayerCode int    `gorm:"column:player_code;primary_key"`
-	SongId     string `gorm:"column:song_id;primary_key"`
-	Mode       string `gorm:"column:mode;primary_key"`
-	Difficulty string `gorm:"column:difficulty;primary_key"`
+	PlayerCode int    `gorm:"column:player_code;primary_key" json:"code"`
+	SongId     string `gorm:"column:song_id;primary_key" json:"id"`
+	Mode       string `gorm:"column:mode;primary_key" json:"mode"`
+	Difficulty string `gorm:"column:difficulty;primary_key" json:"difficulty"`
 }
 
 func (PlayerScore) TableName() string {
