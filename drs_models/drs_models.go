@@ -44,8 +44,8 @@ func (Song) TableName() string {
 }
 
 type Difficulty struct {
-	Mode       string `gorm:"column:mode" json:"mode"`
-	Difficulty string `gorm:"column:difficulty" json:"difficulty"`
+	Mode       string `gorm:"column:mode;primary_key" json:"mode"`
+	Difficulty string `gorm:"column:difficulty;primary_key" json:"difficulty"`
 	Level      int    `gorm:"column:level" json:"level"`
 
 	SongId string `gorm:"column:song_id;primary_key" json:"id"`
